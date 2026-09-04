@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: bronze
-    database: adb_p2_grocery_serverless
+    database: grocery_sales
     schema: bronze
     tables:
       - name: train
