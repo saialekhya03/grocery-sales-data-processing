@@ -222,32 +222,6 @@ The Gold layer follows a **Star Schema** design:
 
 ![Grocery Sales Star Schema](design/Data-Model.png)
 
-```text
-                    ┌──────────────┐
-                    │   dim_date   │
-                    └──────┬───────┘
-                           │
-                           │
-┌──────────────┐    ┌──────▼───────┐    ┌───────────────┐
-│ dim_product  │────│  fact_sales  │────│   dim_store   │
-└──────────────┘    └──────────────┘    └───────────────┘
-```
-
-### Fact Table
-
-**fact_sales**
-
-Contains measurable sales information and references the relevant dimensions.
-
-### Dimension Tables
-
-* **dim_date**
-* **dim_product**
-* **dim_store**
-
-This structure makes the data easier to query and supports analytical workloads.
-
----
 
 # 🔄 dbt Transformation Flow
 
@@ -432,7 +406,7 @@ The Gold-layer models can support analytical use cases such as:
 Clone the repository:
 
 ```bash
-git clone https://github.com/Pranay3367/grocery-sales-data-processing.git
+git clone https://github.com/saialekhya03/grocery-sales-data-processing.git
 
 cd grocery-sales-data-processing
 ```
