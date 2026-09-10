@@ -37,60 +37,21 @@ The project follows a layered data architecture:
 
 
 ![Grocery Sales Data Model Pipeline](design/High-level-Structure.png)
-```text
-                    RAW DATA
-                       │
-                       ▼
-              ┌─────────────────┐
-              │  BRONZE LAYER   │
-              │                 │
-              │ train           │
-              │ test            │
-              │ stores          │
-              │ transactions    │
-              │ oil             │
-              │ holidays_events │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │  SILVER LAYER   │
-              │                 │
-              │    STAGING      │
-              │        +        │
-              │   INTERMEDIATE  │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │   GOLD LAYER    │
-              │                 │
-              │ dim_date        │
-              │ dim_product     │
-              │ dim_store       │
-              │ fact_sales      │
-              └────────┬────────┘
-                       │
-                       ▼
-                ANALYTICS /
-                 REPORTING
-```
-
-The repository also contains architecture and data-model diagrams under the `design/` directory.
-
----
 
 ## 🛠️ Technology Stack
 
-| Technology         | Purpose                                |
-| ------------------ | -------------------------------------- |
-| **dbt**            | Data transformation and modeling       |
-| **SQL**            | Data transformation logic              |
-| **Databricks SQL** | Data processing and analytical storage |
-| **Delta Lake**     | Storage layer for transformed datasets |
-| **Git / GitHub**   | Version control and project management |
-
----
+| Technology | Purpose |
+|---|---|
+| **Azure Data Factory** | Pipeline orchestration and scheduling |
+| **Azure Data Lake Storage Gen2** | Cloud-based data storage |
+| **Azure Databricks** | Data processing and transformation |
+| **PySpark** | Distributed data processing |
+| **Delta Lake** | Reliable storage and ACID transactions |
+| **dbt** | Data transformation, modeling, and testing |
+| **SQL** | Data querying and transformation |
+| **Apache Airflow** | Workflow orchestration |
+| **Unity Catalog** | Data governance and data access management |
+| **Git / GitHub** | Version control and collaboration |
 
 ## 📂 Dataset
 
@@ -330,12 +291,34 @@ and materializes these models as tables.
 
 ---
 
+# 📊 Dashboards
+
+The Gold-layer analytics models are used to support grocery sales reporting and
+business analysis. The repository includes the dashboard output under the
+`Dashboards/` directory.
+
+### Grocery Sales Dashboard
+
+![Grocery Sales Dashboard](Dashboards/Dashboard.png.png)
+
+The dashboard provides a visual view of the curated grocery sales data and
+supports analysis of sales performance and business trends.
+
+> **Note:** The image path above matches the current filename in the GitHub
+> repository: `Dashboards/Dashboard.png.png`.
+
+---
+
 # 🧩 Project Structure
 
 ```text
 grocery-sales-data-processing/
 │
-├── analyses/
+├── Airflow/
+│   └── dags/
+│
+├── Dashboards/
+│   └── Dashboard.png.png
 │
 ├── datasets/
 │   └── raw/
@@ -348,49 +331,40 @@ grocery-sales-data-processing/
 │       └── transactions.txt
 │
 ├── design/
-│   ├── Data-Model.png
+│   ├── Data-Model.png.jpeg
 │   ├── High-level-Structure.png
-│   └── Low-Level.png
+│   └── Low_Level_Data_model.png.png
 │
-├── macros/
-│   └── generate_schema_name.sql
+├── development/
+│   ├── silver/
+│   │   ├── staging/
+│   │   └── intermediate/
+│   └── gold/
+│       ├── dim_date.sql
+│       ├── dim_product.sql
+│       ├── dim_store.sql
+│       └── fact_sales.sql
 │
 ├── models/
 │   ├── staging/
-│   │   ├── stg_holidays_events.sql
-│   │   ├── stg_oil.sql
-│   │   ├── stg_stores.sql
-│   │   ├── stg_test.sql
-│   │   ├── stg_train.sql
-│   │   └── stg_transactions.sql
-│   │
 │   ├── intermediate/
-│   │   ├── int_sales.sql
-│   │   ├── int_sales_complete.sql
-│   │   ├── int_sales_enriched.sql
-│   │   ├── int_sales_oil.sql
-│   │   └── int_train_sales.sql
-│   │
 │   ├── marts/
-│   │   ├── dim_date.sql
-│   │   ├── dim_product.sql
-│   │   ├── dim_store.sql
-│   │   └── fact_sales.sql
-│   │
 │   └── sources.yml
 │
+├── macros/
+├── analyses/
 ├── seeds/
 ├── snapshots/
 ├── tests/
 │
+├── .gitattributes
 ├── .gitignore
 ├── dbt_project.yml
 └── README.md
 ```
 
-The repository structure currently contains dedicated directories for analyses, raw datasets, design diagrams, macros, models, seeds, snapshots, and tests.
-
----
+The repository separates raw datasets, design assets, development-layer
+transformations, dbt models, Airflow orchestration, dashboards, and tests.
 
 # 🧪 Data Quality & Testing
 
@@ -458,7 +432,7 @@ The Gold-layer models can support analytical use cases such as:
 Clone the repository:
 
 ```bash
-git clone https://github.com/Prabu-Kanth/grocery-sales-data-processing.git
+git clone https://github.com/Pranay3367/grocery-sales-data-processing.git
 
 cd grocery-sales-data-processing
 ```
@@ -520,6 +494,7 @@ The schema configuration is defined directly in `dbt_project.yml`.
 * Created reusable fact and dimension models.
 * Separated raw data from business-ready datasets.
 * Established a maintainable project structure for future analytical workloads.
+* Added dashboard visualization for curated grocery sales analytics.
 
 ---
 
@@ -530,11 +505,10 @@ Possible future enhancements include:
 * Add comprehensive dbt schema tests.
 * Add dbt documentation and column descriptions.
 * Implement incremental models for large datasets.
-* Add automated pipeline orchestration using Apache Airflow.
-* Add CI/CD for dbt deployments.
-* Add data quality monitoring.
-* Build Power BI or Databricks dashboards.
+* Add CI/CD for dbt and pipeline deployments.
+* Expand automated data quality monitoring.
 * Add automated data freshness checks.
+* Improve model-level lineage and observability.
 * Implement model-level lineage and observability.
 * Add more advanced sales forecasting and analytical models.
 
