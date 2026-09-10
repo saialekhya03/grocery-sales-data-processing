@@ -220,7 +220,7 @@ Provides date-related attributes for analytical queries.
 
 The Gold layer follows a **Star Schema** design:
 
-![Grocery Sales Star Schema](Data-Model.png.jpeg)
+![Grocery Sales Star Schema](design/Data-Model.png.jpeg)
 
 
 # 🔄 dbt Transformation Flow
